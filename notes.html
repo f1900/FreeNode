@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>在线便签</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="notes">
+  <div class="app-container">
+    <!-- 菜单由 menu.js 动态注入 -->
+
+    <div class="page-content">
+      <div class="page active">
+        <h2><i class="fas fa-pen-to-square"></i> 在线便签</h2>
+        <p>在此输入文字，点击右上角按钮可一键复制全部内容。</p>
+
+        <div class="editor-wrap">
+          <button class="copy-btn" id="copyBtn" type="button" aria-label="复制全部内容">
+            <i class="fas fa-copy" id="copyIcon"></i>
+            <span id="copyText">复制</span>
+          </button>
+          <textarea
+            id="editor"
+            class="editor"
+            placeholder="在此输入或粘贴您的文本…"
+            spellcheck="false"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="menu.js"></script>
+  <script>
+    (function () {
+      const editor = document.getElementById('editor');
+      const copyBtn = document.getElementById('copyBtn');
+      const copyIcon = document.getElementById('copyIcon');
+      const copyText = document.getElementById('copyText');
+
+      // 恢复上次内容
+      const savedContent = localStorage.getItem('notes_content');
+      if (savedContent) editor.value = savedContent;
+
+      // 自动保存
+      editor.addEventListener('input', () => {
+        localStorage.setItem('notes_content', editor.value);
+      });
+
+      // 复制功能（优先 Clipboard API，降级 execCommand）
+      async function copyContent() {
+        const text = editor.value;
+        if (!text) {
+          flash('fa-circle-exclamation', '空内容', '#f59e0b');
+          return;
+        }
+
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            // 降级方案
+            editor.select();
+            editor.setSelectionRange(0, text.length);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            editor.blur();
+          }
+          flash('fa-check', '已复制', '#22c55e');
+        } catch (err) {
+          flash('fa-xmark', '复制失败', '#ef4444');
+        }
+      }
+
+      // 按钮反馈动画
+      function flash(iconClass, text, color) {
+        copyIcon.className = 'fas ' + iconClass;
+        copyIcon.style.color = color;
+        copyText.textContent = text;
+        copyBtn.classList.add('flash');
+        setTimeout(() => {
+          copyIcon.className = 'fas fa-copy';
+          copyIcon.style.color = '';
+          copyText.textContent = '复制';
+          copyBtn.classList.remove('flash');
+        }, 1600);
+      }
+
+      copyBtn.addEventListener('click', copyContent);
+
+      // 快捷键 Ctrl/Cmd + Shift + C
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'c') {
+          e.preventDefault();
+          copyContent();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

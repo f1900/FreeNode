@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>应用下载</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="download">
+  <div class="app-container">
+    <!-- 菜单由 menu.js 动态注入 -->
+
+    <div class="page-content">
+      <div class="page active">
+        <h2><i class="fas fa-download"></i> 应用下载</h2>
+        <p>选择适合您设备的版本，立即体验。</p>
+
+        <div class="download-grid">
+          <!-- Android -->
+          <div class="download-card">
+            <div class="download-icon android">
+              <i class="fab fa-android"></i>
+            </div>
+            <h3>Android 版</h3>
+            <p class="download-meta">v2.4.1 · 28.6 MB · Android 8.0+</p>
+            <a class="download-btn" href="#" download>
+              <i class="fas fa-download"></i> 下载 APK
+            </a>
+          </div>
+
+          <!-- iOS -->
+          <div class="download-card">
+            <div class="download-icon ios">
+              <i class="fab fa-apple"></i>
+            </div>
+            <h3>iOS 版</h3>
+            <p class="download-meta">v2.4.1 · App Store · iOS 14.0+</p>
+            <a class="download-btn" href="#" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-external-link-alt"></i> 前往 App Store
+            </a>
+          </div>
+
+          <!-- Windows -->
+          <div class="download-card">
+            <div class="download-icon windows">
+              <i class="fab fa-windows"></i>
+            </div>
+            <h3>Windows 版</h3>
+            <p class="download-meta">v2.4.1 · 64.2 MB · Windows 10/11</p>
+            <a class="download-btn" href="#" download>
+              <i class="fas fa-download"></i> 下载 EXE
+            </a>
+          </div>
+        </div>
+
+        <p class="download-hint">
+          <i class="fas fa-circle-info"></i>
+          提示：点击对应按钮即可开始下载或跳转至应用商店。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="menu.js"></script>
+</body>
+</html>

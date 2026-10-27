@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>关于本站</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="index">
+  <div class="app-container">
+    <!-- 菜单由 menu.js 动态注入 -->
+
+    <div class="page-content">
+      <div class="page active">
+        <h2><i class="fas fa-circle-info"></i> 关于本站</h2>
+        <p>这是一个轻量、优雅、零门槛的多页面小站，专为日常使用而设计。下面简单介绍一下它的能力与特色。</p>
+
+        <!-- 介绍区块 -->
+        <div class="about-section">
+          <h3><i class="fas fa-wand-magic-sparkles"></i> 我们提供什么</h3>
+          <ul class="about-list">
+            <li>
+              <i class="fas fa-link"></i>
+              <span><strong>链接导航</strong> —— 首页汇集常用链接，一键跳转，内外链清晰区分。</span>
+            </li>
+            <li>
+              <i class="fas fa-download"></i>
+              <span><strong>应用下载</strong> —— 集中提供 Android、iOS、Windows 三个平台的下载入口。</span>
+            </li>
+            <li>
+              <i class="fas fa-pen-to-square"></i>
+              <span><strong>在线便签</strong> —— 大尺寸编辑区，输入即自动保存，右上角一键复制全部内容。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="about-section">
+          <h3><i class="fas fa-star"></i> 特色亮点</h3>
+          <ul class="about-list">
+            <li>
+              <i class="fas fa-moon"></i>
+              <span><strong>昼夜双模式</strong> —— 右上角一键切换白天/黑夜主题，偏好自动记忆。</span>
+            </li>
+            <li>
+              <i class="fas fa-mobile-screen"></i>
+              <span><strong>全设备自适应</strong> —— 电脑、平板、手机竖屏横屏都能获得舒适体验。</span>
+            </li>
+            <li>
+              <i class="fas fa-code"></i>
+              <span><strong>公共菜单组件</strong> —— 菜单与主题逻辑集中维护，三个页面共享，改一处即全站生效。</span>
+            </li>
+            <li>
+              <i class="fas fa-feather"></i>
+              <span><strong>轻量零负担</strong> —— 无框架、无构建，仅一个 CSS 和一个 JS，打开即用。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="about-section">
+          <h3><i class="fas fa-layer-group"></i> 页面结构</h3>
+          <div class="about-pages">
+            <a class="about-page-card" href="index.html">
+              <i class="fas fa-house"></i>
+              <span class="about-page-name">首页</span>
+              <span class="about-page-desc">链接导航列表</span>
+            </a>
+            <a class="about-page-card" href="download.html">
+              <i class="fas fa-download"></i>
+              <span class="about-page-name">下载页</span>
+              <span class="about-page-desc">三平台安装包</span>
+            </a>
+            <a class="about-page-card" href="notes.html">
+              <i class="fas fa-pen-to-square"></i>
+              <span class="about-page-name">便签页</span>
+              <span class="about-page-desc">编辑与一键复制</span>
+            </a>
+          </div>
+        </div>
+
+        <p class="about-footer">
+          <i class="fas fa-heart"></i>
+          用心打磨每一个细节，希望你喜欢。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="menu.js"></script>
+</body>
+</html>

@@ -1,78 +1,105 @@
 /**
- * 公共菜单组件
- * 页面通过 <body data-page="index"> 标识自己
- * 自动注入：昼夜切换按钮 + 三个菜单项
+ * 公共组件：菜单 + 昼夜切换 + 页脚
+ * 依赖 jQuery
+ * 页面通过 <body data-page="xxx"> 标识自己
  */
-(function () {
+ $(function () {
+  // ---------- 菜单配置 ----------
   const MENU_CONFIG = [
-    { page: 'index',    href: 'index.html',    icon: 'fa-house',      label: '首页' },
-    { page: 'download', href: 'download.html', icon: 'fa-download',   label: '下载' },
+    { page: 'index',    href: 'index.html',    icon: 'fa-house',         label: '首页' },
+    { page: 'download', href: 'download.html', icon: 'fa-download',      label: '下载' },
+    { page: 'download', href: 'download.html', icon: 'fa-download',      label: '下载' },
     { page: 'notes',    href: 'notes.html',    icon: 'fa-pen-to-square', label: '便签' }
   ];
 
-  const currentPage = document.body.dataset.page || 'index';
+  // ---------- 页脚配置（外部网站链接） ----------
+  const FOOTER_LINKS = [
+    { href: 'https://www.wikipedia.org',     label: '维基百科',      icon: 'fas fa-globe' },
+    { href: 'https://github.com',            label: 'GitHub',        icon: 'fab fa-github' },
+    { href: 'https://developer.mozilla.org', label: 'MDN Web Docs',  icon: 'fas fa-book-open' },
+    { href: 'https://stackoverflow.com',     label: 'Stack Overflow', icon: 'fab fa-stack-overflow' }
+  ];
 
-  // 菜单 HTML
-  const menuHTML = MENU_CONFIG.map(item => {
+  const $body = $('body');
+  const currentPage = $body.data('page') || 'index';
+
+  // ---------- 构建并注入菜单 ----------
+  const $menu = $('<div>', { class: 'menu', id: 'menu' });
+  $.each(MENU_CONFIG, function (_, item) {
     const activeClass = item.page === currentPage ? ' active' : '';
-    return `
-      <a href="${item.href}" class="menu-item${activeClass}" aria-label="${item.label}页面">
-        <i class="fas ${item.icon}"></i>
-        <span>${item.label}</span>
-      </a>
-    `;
-  }).join('');
+    $('<a>', {
+      href: item.href,
+      class: 'menu-item' + activeClass,
+      'aria-label': item.label + '页面'
+    })
+      .append($('<i>', { class: 'fas ' + item.icon }))
+      .append($('<span>').text(item.label))
+      .appendTo($menu);
+  });
+  $('.app-container').prepend($menu);
 
-  // 昼夜切换按钮 HTML
-  const toggleHTML = `
-    <div class="theme-toggle" id="themeToggle" title="切换昼夜模式" role="button" aria-label="切换昼夜模式" tabindex="0">
-      <i class="fas fa-moon" id="themeIcon"></i>
-    </div>
-  `;
+  // ---------- 构建并注入昼夜切换按钮 ----------
+  const $toggle = $('<div>', {
+    class: 'theme-toggle',
+    id: 'themeToggle',
+    title: '切换昼夜模式',
+    role: 'button',
+    'aria-label': '切换昼夜模式',
+    tabindex: 0
+  }).append($('<i>', { class: 'fas fa-moon', id: 'themeIcon' }));
 
-  // 注入：切换按钮放到 body 最前，菜单放到 .app-container 最前
-  const body = document.body;
-  const toggleEl = document.createElement('div');
-  toggleEl.innerHTML = toggleHTML;
-  body.insertBefore(toggleEl.firstElementChild, body.firstChild);
+  $body.prepend($toggle);
 
-  const appContainer = document.querySelector('.app-container');
-  if (appContainer) {
-    const menuEl = document.createElement('div');
-    menuEl.innerHTML = `<div class="menu" id="menu">${menuHTML}</div>`;
-    appContainer.insertBefore(menuEl.firstElementChild, appContainer.firstChild);
-  }
+  // ---------- 构建并注入页脚 ----------
+  const $footer = $('<footer>', { class: 'site-footer' });
 
-  // ---------- 昼夜模式初始化 ----------
-  const themeToggle = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
+  const $footerLinks = $('<div>', { class: 'footer-links' });
+  $.each(FOOTER_LINKS, function (_, link) {
+    $('<a>', {
+      class: 'footer-link',
+      href: link.href,
+      target: '_blank',
+      rel: 'noopener noreferrer'
+    })
+      .append($('<i>', { class: link.icon }))
+      .append($('<span>').text(link.label))
+      .appendTo($footerLinks);
+  });
+  $footer.append($footerLinks);
 
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
-    themeIcon.classList.remove('fa-moon');
-    themeIcon.classList.add('fa-sun');
+  const $footerCopy = $('<p>', { class: 'footer-copy' })
+    .append($('<i>', { class: 'fas fa-heart' }))
+    .append(document.createTextNode(' 用心打磨 · 保留所有权利 © ' + new Date().getFullYear()));
+  $footer.append($footerCopy);
+
+  $('.app-container').append($footer);
+
+  // ---------- 昼夜模式 ----------
+  const $themeIcon = $('#themeIcon');
+
+  if (localStorage.getItem('theme') === 'dark') {
+    $body.addClass('dark-mode');
+    $themeIcon.removeClass('fa-moon').addClass('fa-sun');
   }
 
   function toggleTheme() {
-    if (body.classList.contains('dark-mode')) {
-      body.classList.remove('dark-mode');
-      themeIcon.classList.remove('fa-sun');
-      themeIcon.classList.add('fa-moon');
+    if ($body.hasClass('dark-mode')) {
+      $body.removeClass('dark-mode');
+      $themeIcon.removeClass('fa-sun').addClass('fa-moon');
       localStorage.setItem('theme', 'light');
     } else {
-      body.classList.add('dark-mode');
-      themeIcon.classList.remove('fa-moon');
-      themeIcon.classList.add('fa-sun');
+      $body.addClass('dark-mode');
+      $themeIcon.removeClass('fa-moon').addClass('fa-sun');
       localStorage.setItem('theme', 'dark');
     }
   }
 
-  themeToggle.addEventListener('click', toggleTheme);
-  themeToggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleTheme();
-    }
-  });
-})();
+  $('#themeToggle')
+    .on('click', toggleTheme)
+    .on('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+});

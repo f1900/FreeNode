@@ -32,72 +32,76 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="menu.js"></script>
   <script>
-    (function () {
-      const editor = document.getElementById('editor');
-      const copyBtn = document.getElementById('copyBtn');
-      const copyIcon = document.getElementById('copyIcon');
-      const copyText = document.getElementById('copyText');
+    // 便签逻辑（jQuery 版）
+    $(function () {
+      const $editor   = $('#editor');
+      const $copyBtn  = $('#copyBtn');
+      const $copyIcon = $('#copyIcon');
+      const $copyText = $('#copyText');
 
       // 恢复上次内容
-      const savedContent = localStorage.getItem('notes_content');
-      if (savedContent) editor.value = savedContent;
+      const saved = localStorage.getItem('notes_content');
+      if (saved) $editor.val(saved);
 
       // 自动保存
-      editor.addEventListener('input', () => {
-        localStorage.setItem('notes_content', editor.value);
+      $editor.on('input', function () {
+        localStorage.setItem('notes_content', $editor.val());
       });
 
-      // 复制功能（优先 Clipboard API，降级 execCommand）
-      async function copyContent() {
-        const text = editor.value;
+      // 按钮反馈
+      function flash(iconClass, text, color) {
+        $copyIcon.attr('class', 'fas ' + iconClass).css('color', color);
+        $copyText.text(text);
+        $copyBtn.addClass('flash');
+        setTimeout(function () {
+          $copyIcon.attr('class', 'fas fa-copy').css('color', '');
+          $copyText.text('复制');
+          $copyBtn.removeClass('flash');
+        }, 1600);
+      }
+
+      // 复制逻辑：优先 Clipboard API，降级 execCommand
+      function copyContent() {
+        const text = $editor.val();
         if (!text) {
           flash('fa-circle-exclamation', '空内容', '#f59e0b');
           return;
         }
 
-        try {
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-          } else {
-            // 降级方案
-            editor.select();
-            editor.setSelectionRange(0, text.length);
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text)
+            .then(function () { flash('fa-check', '已复制', '#22c55e'); })
+            .catch(function () { flash('fa-xmark', '复制失败', '#ef4444'); });
+        } else {
+          // 降级方案
+          const el = $editor.get(0);
+          el.select();
+          el.setSelectionRange(0, text.length);
+          try {
             document.execCommand('copy');
-            window.getSelection().removeAllRanges();
-            editor.blur();
+            flash('fa-check', '已复制', '#22c55e');
+          } catch (err) {
+            flash('fa-xmark', '复制失败', '#ef4444');
           }
-          flash('fa-check', '已复制', '#22c55e');
-        } catch (err) {
-          flash('fa-xmark', '复制失败', '#ef4444');
+          window.getSelection().removeAllRanges();
+          el.blur();
         }
       }
 
-      // 按钮反馈动画
-      function flash(iconClass, text, color) {
-        copyIcon.className = 'fas ' + iconClass;
-        copyIcon.style.color = color;
-        copyText.textContent = text;
-        copyBtn.classList.add('flash');
-        setTimeout(() => {
-          copyIcon.className = 'fas fa-copy';
-          copyIcon.style.color = '';
-          copyText.textContent = '复制';
-          copyBtn.classList.remove('flash');
-        }, 1600);
-      }
-
-      copyBtn.addEventListener('click', copyContent);
+      // 点击复制
+      $copyBtn.on('click', copyContent);
 
       // 快捷键 Ctrl/Cmd + Shift + C
-      document.addEventListener('keydown', (e) => {
+      $(document).on('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'c') {
           e.preventDefault();
           copyContent();
         }
       });
-    })();
+    });
   </script>
 </body>
 </html>

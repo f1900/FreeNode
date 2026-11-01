@@ -1,0 +1,111 @@
+/* 下载卡片 */
+.download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: clamp(1rem, 3vw, 1.5rem);
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+}
+
+.download-card {
+    background: var(--link-bg);
+    border: 1px solid var(--link-border);
+    border-radius: clamp(1rem, 4vw, 1.5rem);
+    padding: clamp(1.2rem, 4vw, 2rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 0.8rem);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+}
+
+.download-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.2);
+}
+
+.download-icon {
+    width: clamp(3rem, 10vw, 4rem);
+    height: clamp(3rem, 10vw, 4rem);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--link-icon-bg);
+    margin-bottom: 0.3rem;
+}
+
+.download-icon i {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: var(--link-icon-color);
+}
+
+.download-icon.android i {
+    color: #3ddc84;
+}
+
+.download-icon.ios i {
+    color: var(--icon-color);
+}
+
+.download-icon.windows i {
+    color: #00a4ef;
+}
+
+.download-card h3 {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    color: var(--heading-color);
+    font-weight: 600;
+}
+
+.download-meta {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    word-break: break-word;
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: auto;
+    padding: clamp(0.55rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+    border-radius: 100px;
+    background: linear-gradient(135deg, #4a6fa5, #3a5c9e);
+    color: #fff;
+    font-weight: 600;
+    font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 18px -8px rgba(74, 111, 165, 0.5);
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(74, 111, 165, 0.6);
+    filter: brightness(1.08);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+}
+
+.download-hint {
+    margin-top: clamp(1.2rem, 4vw, 1.8rem);
+    font-size: clamp(0.78rem, 2vw, 0.9rem);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.download-hint i {
+    color: var(--icon-active-color);
+}

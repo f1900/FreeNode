@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>在线便签</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="notes.css">
 </head>
 <body data-page="notes">
   <div class="app-container">
@@ -14,7 +15,7 @@
     <div class="page-content">
       <div class="page active">
         <h2><i class="fas fa-pen-to-square"></i> 在线便签</h2>
-        <p>在此输入文字，点击右上角按钮可一键复制全部内容。</p>
+        <p>内容由系统提供。点击右上角按钮可一键复制全部内容。</p>
 
         <div class="editor-wrap">
           <button class="copy-btn" id="copyBtn" type="button" aria-label="复制全部内容">
@@ -24,7 +25,8 @@
           <textarea
             id="editor"
             class="editor"
-            placeholder="在此输入或粘贴您的文本…"
+            readonly
+            placeholder="系统正在加载或验证内容…"
             spellcheck="false"
           ></textarea>
         </div>
@@ -32,23 +34,104 @@
     </div>
   </div>
 
+  <!-- 防机器人验证码弹窗 (隐藏状态) -->
+  <div class="captcha-overlay" id="captchaOverlay">
+    <div class="captcha-box">
+      <h3><i class="fas fa-shield-halved"></i> 安全验证</h3>
+      <p>系统未检测到本地内容，请完成验证以加载默认演示文本。</p>
+      <div class="captcha-question" id="captchaQuestion">1 + 1 = ?</div>
+      <input type="number" id="captchaInput" class="captcha-input" placeholder="请输入答案" autocomplete="off">
+      <div class="captcha-actions">
+        <button class="captcha-btn cancel" id="captchaCancel">取消</button>
+        <button class="captcha-btn confirm" id="captchaConfirm">确认验证</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="menu.js"></script>
   <script>
-    // 便签逻辑（jQuery 版）
+    // 便签逻辑（只读 + 验证码）
     $(function () {
       const $editor   = $('#editor');
       const $copyBtn  = $('#copyBtn');
       const $copyIcon = $('#copyIcon');
       const $copyText = $('#copyText');
 
-      // 恢复上次内容
-      const saved = localStorage.getItem('notes_content');
-      if (saved) $editor.val(saved);
+      // 验证码相关 DOM
+      const $captchaOverlay  = $('#captchaOverlay');
+      const $captchaQuestion = $('#captchaQuestion');
+      const $captchaInput    = $('#captchaInput');
+      const $captchaConfirm  = $('#captchaConfirm');
+      const $captchaCancel   = $('#captchaCancel');
 
-      // 自动保存
-      $editor.on('input', function () {
-        localStorage.setItem('notes_content', $editor.val());
+      let captchaAnswer = 0;
+
+      // 默认填充的演示文本
+      const DEFAULT_TEXT = "欢迎使用在线便签！\n\n这里是系统为您填充的默认演示文本。\n因为当前浏览器（或您的本地存储）里没有内容，所以需要经过一次简单的安全验证。\n\n您可以点击右上角的【复制】按钮，将这段文字复制到剪贴板。\n由于这是一个只读的编辑器，您无法在此手动修改内容。";
+
+      // 初始化加载
+      function initNotes() {
+        const savedContent = localStorage.getItem('notes_content');
+        
+        if (savedContent) {
+          // 有内容，直接填充，不弹验证码
+          $editor.val(savedContent);
+        } else {
+          // 没内容，显示验证码
+          showCaptcha();
+        }
+      }
+
+      // 生成随机验证码
+      function generateCaptcha() {
+        const a = Math.floor(Math.random() * 10) + 1;
+        const b = Math.floor(Math.random() * 10) + 1;
+        captchaAnswer = a + b;
+        $captchaQuestion.text(`${a} + ${b} = ?`);
+        $captchaInput.val('');
+        $captchaInput.focus();
+      }
+
+      // 显示弹窗
+      function showCaptcha() {
+        generateCaptcha();
+        $captchaOverlay.addClass('show');
+      }
+
+      // 隐藏弹窗
+      function hideCaptcha() {
+        $captchaOverlay.removeClass('show');
+        $captchaInput.blur();
+      }
+
+      // 确认验证
+      $captchaConfirm.on('click', function () {
+        const userAnswer = parseInt($captchaInput.val(), 10);
+        if (userAnswer === captchaAnswer) {
+          // 验证成功
+          $editor.val(DEFAULT_TEXT);
+          localStorage.setItem('notes_content', DEFAULT_TEXT); // 存入本地，下次直接加载
+          hideCaptcha();
+        } else {
+          // 验证失败，刷新题目
+          $captchaQuestion.css('color', '#ef4444');
+          setTimeout(() => $captchaQuestion.css('color', ''), 500);
+          generateCaptcha();
+        }
+      });
+
+      // 输入框回车直接确认
+      $captchaInput.on('keypress', function (e) {
+        if (e.which === 13) {
+          $captchaConfirm.click();
+        }
+      });
+
+      // 取消验证（保持空白）
+      $captchaCancel.on('click', function () {
+        hideCaptcha();
+        $editor.attr('placeholder', '验证已取消，无内容可显示。');
       });
 
       // 按钮反馈
@@ -63,11 +146,11 @@
         }, 1600);
       }
 
-      // 复制逻辑：优先 Clipboard API，降级 execCommand
+      // 复制逻辑
       function copyContent() {
         const text = $editor.val();
         if (!text) {
-          flash('fa-circle-exclamation', '空内容', '#f59e0b');
+          flash('fa-circle-exclamation', '无内容', '#f59e0b');
           return;
         }
 
@@ -76,7 +159,6 @@
             .then(function () { flash('fa-check', '已复制', '#22c55e'); })
             .catch(function () { flash('fa-xmark', '复制失败', '#ef4444'); });
         } else {
-          // 降级方案
           const el = $editor.get(0);
           el.select();
           el.setSelectionRange(0, text.length);
@@ -101,6 +183,9 @@
           copyContent();
         }
       });
+
+      // 启动
+      initNotes();
     });
   </script>
 </body>

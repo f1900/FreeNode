@@ -1,0 +1,88 @@
+/* 首页链接列表 */
+.link-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.7rem, 2.5vw, 1rem);
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+}
+
+.link-item {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.8rem, 3vw, 1.2rem);
+    padding: clamp(0.9rem, 3vw, 1.3rem) clamp(1rem, 4vw, 1.6rem);
+    background: var(--link-bg);
+    border: 1px solid var(--link-border);
+    border-radius: clamp(1rem, 4vw, 1.5rem);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.link-item:hover {
+    background: var(--link-hover-bg);
+    transform: translateX(4px);
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.15);
+    border-color: var(--link-border);
+}
+
+.link-icon {
+    width: clamp(2.2rem, 7vw, 2.8rem);
+    height: clamp(2.2rem, 7vw, 2.8rem);
+    border-radius: 50%;
+    background: var(--link-icon-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.link-icon i {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--link-icon-color);
+}
+
+.link-item:hover .link-icon {
+    transform: scale(1.08);
+}
+
+.link-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+}
+
+.link-title {
+    font-weight: 600;
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    color: var(--heading-color);
+}
+
+.link-desc {
+    font-size: clamp(0.78rem, 2vw, 0.9rem);
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.link-arrow {
+    color: var(--icon-color);
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.link-item:hover .link-arrow {
+    color: var(--icon-active-color);
+    opacity: 1;
+    transform: translateX(2px);
+}

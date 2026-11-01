@@ -1,0 +1,106 @@
+/* ==========================================================
+   便签页：只读编辑器 & 复制按钮
+   ========================================================== */
+.editor-wrap {
+    position: relative;
+    margin-top: clamp(0.8rem, 2.5vw, 1.2rem);
+}
+
+.editor {
+    width: 100%;
+    min-height: 46vh;
+    resize: vertical;
+    background: var(--page-bg);
+    border: 1px solid var(--page-border);
+    border-radius: clamp(1rem, 4vw, 1.5rem);
+    padding: clamp(1rem, 3.5vw, 1.5rem);
+    padding-top: clamp(2.8rem, 8vw, 3.4rem);
+    /* 给右上角按钮留空间 */
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: clamp(0.9rem, 2.4vw, 1.05rem);
+    line-height: 1.7;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+    caret-color: var(--icon-active-color);
+}
+
+.editor:focus {
+    border-color: var(--icon-active-color);
+    box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.03),
+        0 0 0 3px rgba(74, 111, 165, 0.15);
+}
+
+.editor::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* 复制按钮（右上角悬浮） */
+.copy-btn {
+    position: absolute;
+    top: clamp(0.7rem, 2.5vw, 0.9rem);
+    right: clamp(0.7rem, 2.5vw, 0.9rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: clamp(0.4rem, 1.5vw, 0.55rem) clamp(0.8rem, 3vw, 1.1rem);
+    border-radius: 100px;
+    background: var(--link-bg);
+    border: 1px solid var(--link-border);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: clamp(0.75rem, 2vw, 0.88rem);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    z-index: 2;
+    font-family: inherit;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+}
+
+.copy-btn:hover {
+    background: var(--link-hover-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.15);
+    color: var(--icon-active-color);
+}
+
+.copy-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.copy-btn.flash {
+    animation: copyFlash 0.4s ease;
+}
+
+@keyframes copyFlash {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.copy-btn i {
+    font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+    transition: color 0.3s ease;
+}
+
+/* 针对横屏手机的高度适配 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .editor {
+        min-height: 30vh;
+    }
+}

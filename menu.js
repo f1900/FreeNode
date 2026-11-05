@@ -42,19 +42,19 @@ $(function () {
    // ---------- 构建并注入多个顶部广告位 ----------
   if (AD_LIST.length > 0) {
     // 创建一个大容器包裹所有广告，方便统一处理
-    const $adContainer = $('<div>', { class: 'ad-container' });
+    const $adContainer = $('<div>', { class: 'cnm-container' });
 
     $.each(AD_LIST, function (index, ad) {
-      const $adBanner = $('<div>', { class: 'ad-banner-wrap' });
-      const $adInner = $('<div>', { class: 'ad-inner' }).appendTo($adBanner);
+      const $adBanner = $('<div>', { class: 'cnm-banner-wrap' });
+      const $adInner = $('<div>', { class: 'cnm-inner' }).appendTo($adBanner);
       
       // 关闭按钮（为每个广告单独绑定）
-      const $closeBtn = $('<button>', { class: 'ad-close', type: 'button', 'aria-label': '关闭广告' })
+      const $closeBtn = $('<button>', { class: 'cnm-close', type: 'button', 'aria-label': '关闭广告' })
         .append($('<i>', { class: 'fas fa-times' }))
         .appendTo($adInner);
 
       // 广告链接与图片
-      $('<a>', { href: ad.linkUrl, target: '_blank', rel: 'noopener noreferrer', class: 'ad-link' })
+      $('<a>', { href: ad.linkUrl, target: '_blank', rel: 'noopener noreferrer', class: 'cnm-link' })
         .append($('<img>', { src: ad.imageSrc, alt: ad.alt }))
         .appendTo($adInner);
 
@@ -72,7 +72,7 @@ $(function () {
         // 重新绑定带记忆的关闭
         $closeBtn.off('click').on('click', function(e){
           e.preventDefault();
-          $(this).closest('.ad-banner-wrap').slideUp(300);
+          $(this).closest('.cnm-banner-wrap').slideUp(300);
           sessionStorage.setItem('ad_closed_' + index, 'true');
         });
       }

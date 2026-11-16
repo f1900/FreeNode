@@ -8,29 +8,32 @@ $(function () {
   const MENU_CONFIG = [
     { page: 'index', href: 'index.html', icon: 'fa-house', label: '首页' },
     { page: 'download', href: 'download.html', icon: 'fa-download', label: '下载' },
-    { page: 'notes', href: 'notes.html', icon: 'fa-pen-to-square', label: '便签' },
-    { page: 'reward', href: 'reward.html', icon: 'fa-mug-hot', label: '打赏' }
+    { page: 'notes', href: 'notes.html', icon: 'fa-pen-to-square', label: '免费节点' }
+    // ,{ page: 'reward', href: 'reward.html', icon: 'fa-mug-hot', label: '打赏' }
   ];
 
   // ---------- 页脚配置（外部网站链接） ----------
   const FOOTER_LINKS = [
-    { href: 'https://www.wikipedia.org', label: '维基百科', icon: 'fas fa-globe' },
-    { href: 'https://github.com', label: 'GitHub', icon: 'fab fa-github' },
-    { href: 'https://developer.mozilla.org', label: 'MDN Web Docs', icon: 'fas fa-book-open' },
-    { href: 'https://stackoverflow.com', label: 'Stack Overflow', icon: 'fab fa-stack-overflow' }
+    { href: 'https://www.wikipedia.org', label: '维基百科', icon: 'fa-wikipedia-w' },
+    { href: 'https://www.google.org', label: 'Google', icon: 'fa-google' },
+    { href: 'https://www.youtube.com', label: 'Youtube', icon: 'fa-youtube' },
+    { href: 'https://x.com', label: 'X', icon: 'fa-x-twitter' },
+    { href: 'https://github.com', label: 'GitHub', icon: 'fa-github' }
+    // { href: 'https://developer.mozilla.org', label: 'MDN Web Docs', icon: 'fas fa-book-open' },
+    // { href: 'https://stackoverflow.com', label: 'Stack Overflow', icon: 'fab fa-stack-overflow' }
   ];
 
   // 想关掉所有广告：将 AD_LIST 设置为 [] 空数组
   // 想加广告：复制一行对象即可，自上而下排列
   const AD_LIST = [
+    // {
+    //   imageSrc: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop',
+    //   linkUrl: 'https://example.com/ad1',
+    //   alt: '广告横幅 1'
+    // },
     {
-      imageSrc: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop',
-      linkUrl: 'https://example.com/ad1',
-      alt: '广告横幅 1'
-    },
-    {
-      imageSrc: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop',
-      linkUrl: 'https://example.com/ad2',
+      imageSrc: 'https://i0.hdslb.com/bfs/archive/b3f7ab85a613806f7b6b1b7e18095098ade82ce0.jpg',
+      linkUrl: '#',
       alt: '广告横幅 2'
     }
     // 想加第三个就在这里继续加 { ... }
@@ -65,17 +68,17 @@ $(function () {
       });
 
       // 如果用户之前关过某一个（针对单个广告的记忆）
-      if (sessionStorage.getItem('ad_closed_' + index) === 'true') {
-        $adBanner.hide();
-      } else {
-        $closeBtn.data('index', index); // 记录索引方便记忆
-        // 重新绑定带记忆的关闭
-        $closeBtn.off('click').on('click', function(e){
-          e.preventDefault();
-          $(this).closest('.cnm-banner-wrap').slideUp(300);
-          sessionStorage.setItem('ad_closed_' + index, 'true');
-        });
-      }
+      // if (sessionStorage.getItem('ad_closed_' + index) === 'true') {
+      //   $adBanner.hide();
+      // } else {
+      //   $closeBtn.data('index', index); // 记录索引方便记忆
+      //   // 重新绑定带记忆的关闭
+      //   $closeBtn.off('click').on('click', function(e){
+      //     e.preventDefault();
+      //     $(this).closest('.cnm-banner-wrap').slideUp(300);
+      //     sessionStorage.setItem('ad_closed_' + index, 'true');
+      //   });
+      // }
 
       $adContainer.append($adBanner);
     });
@@ -121,7 +124,7 @@ $(function () {
       target: '_blank',
       rel: 'noopener noreferrer'
     })
-      .append($('<i>', { class: link.icon }))
+      .append($('<i>', { class: 'fab ' + link.icon }))
       .append($('<span>').text(link.label))
       .appendTo($footerLinks);
   });
@@ -162,4 +165,40 @@ $(function () {
         toggleTheme();
       }
     });
+
+
+    // ---------- 构建并注入图片view ----------
+    const $viewer = $(`
+    <div id="imgViewer" class="img-viewer">
+      <img id="imgViewerImg" src="" alt="">
+    </div>
+  `);
+  $('body').append($viewer);
+
+  const $viewerImg = $viewer.find('#imgViewerImg');
+
+  $(document).on('click', 'img.manual-img', function () {
+    const src = $(this).attr('src');
+    if (!src) return;
+    $viewerImg.attr('src', src);
+    $viewer.addClass('show');
+  });
+
+  function closeViewer() {
+    $viewer.removeClass('show');
+    $viewerImg.attr('src', '');
+  }
+
+  // 点遮罩或图片都关闭
+  $viewer.on('click', closeViewer);
+
+  // 只有点遮罩空白处才关
+  // $viewer.on('click', function (e) {
+  //   if (e.target === this) closeViewer();  
+  // });
+
+  // ESC 关闭
+  $(document).on('keydown', function (e) {
+    if (e.key === 'Escape' && $viewer.hasClass('show')) closeViewer();
+  });
 });

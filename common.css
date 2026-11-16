@@ -480,3 +480,33 @@ img {
 .copy-btn {
     -webkit-tap-highlight-color: transparent;
 }
+/* 图片查看 */
+
+.manual-img {
+    width: 20%;
+    height: auto;
+    cursor: zoom-in;
+    /* max-height: 120px;
+    object-fit: cover;
+    display: block; */
+}
+.img-viewer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .img-viewer.show {
+    display: flex;
+  }
+  .img-viewer img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    cursor: zoom-out;          /* 图片上也显示缩小光标，提示可关闭 */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  }

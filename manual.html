@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>安卓手机科学上网方法</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="manual.css">
+</head>
+
+<body data-page="index">
+  <div class="app-container">
+    <!-- 菜单由 menu.js 动态注入 -->
+
+    <div class="page-content">
+      <div class="page active">
+        <h2><i class="fas fa-circle-info"></i> 使用教程</h2>
+        <p>包含安卓手机  <a href="#apple">苹果手机</a>   <a href="#windows">windows电脑</a> 使用方法</p>
+
+        <div class="about-section">
+          <h3><i class="fab fa-android"></i> 安卓手机使用步骤</h3>
+          <ul class="about-list">
+            <li>
+              <i class="fas fa-download"></i>
+              <span><strong>下载安装</strong> —— 下载安装V2rayNG,老手机下载V2rayNG</span>
+            </li>
+            <img class="manual-img" src="image/a1.jpg">
+            <li>
+              <i class="fas fa-pen-to-square"></i>
+              <span><strong>复制节点</strong> —— 大尺寸编辑区，输入即自动保存，右上角一键复制全部内容。</span>
+            </li>
+            <li>
+              <i class="fas fa-pen-to-square"></i>
+              <span><strong>导入节点</strong> —— 大尺寸编辑区，输入即自动保存，右上角一键复制全部内容。</span>
+            </li>
+            <img class="manual-img" src="image/a3.jpg">
+            <li>
+              <i class="fas fa-pen-to-square"></i>
+              <span><strong>测试节点</strong> —— 大尺寸编辑区，输入即自动保存，右上角一键复制全部内容。</span>
+            </li>
+            <img class="manual-img" src="image/a1.jpg">
+            <li>
+              <i class="fas fa-pen-to-square"></i>
+              <span><strong>开启代理</strong> —— 大尺寸编辑区，输入即自动保存，右上角一键复制全部内容。</span>
+            </li>
+            <img class="manual-img" src="image/a5.jpg">
+          </ul>
+        </div>
+
+        <div class="about-section" id="apple">
+          <h3><i class="fab fa-apple"></i>苹果手机使用步骤</h3>
+          <ul class="about-list">
+            <li>
+              <i class="fas fa-moon"></i>
+              <span><strong>注册美区AppleID</strong> —— 美国地址生成器</span>
+            </li>
+            <pre>
+              打开 appleid.apple.com
+              点击 创建 Apple ID
+              填写：姓名、邮箱、密码、出生日期
+              国家/地区选择:United States(美国)
+              填写美国地址（示例格式）：
+                    Street:123 Main St
+                    City:Portland
+                    State:OR(Oregon)
+                    ZIP:97201
+                    Phone:503-555-1234
+              输入国内手机号验证码
+              完成邮箱验证 → 注册完成
+              在 iPhone / iPad 的 App Store 登录完成激活
+            </pre>
+            <li>
+              <i class="fas fa-mobile-screen"></i>
+              <span><strong>安装karing</strong> —— 在App Store 登录美区ID搜索karing 安装</span>
+            </li>
+            <li>
+              <i class="fas fa-code"></i>
+              <span><strong>复制节点</strong> —— 菜单与主题逻辑集中维护，三个页面共享，改一处即全站生效。</span>
+            </li>
+            <li>
+              <i class="fas fa-feather"></i>
+              <span><strong>导入节点</strong> —— 无框架、无构建，仅一个 CSS 和一个 JS，打开即用。</span>
+            </li>
+            <li>
+              <i class="fas fa-bolt"></i>
+              <span><strong>开启代理</strong> —— 基于 jQuery 实现组件注入与交互，简洁易维护。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="about-section" id="windows">
+          <h3><i class="fab fa-windows"></i>电脑使用步骤</h3>
+          <ul class="about-list">
+            <li>
+              <i class="fas fa-moon"></i>
+              <span><strong>下载安装V2rayN</strong> —— 右上角一键切换白天/黑夜主题，偏好自动记忆。</span>
+            </li>
+            <li>
+              <i class="fas fa-mobile-screen"></i>
+              <span><strong>复制节点</strong> —— 电脑、平板、手机竖屏横屏都能获得舒适体验。</span>
+            </li>
+            <li>
+              <i class="fas fa-code"></i>
+              <span><strong>导入节点</strong> —— 菜单与主题逻辑集中维护，三个页面共享，改一处即全站生效。</span>
+            </li>
+            <li>
+              <i class="fas fa-feather"></i>
+              <span><strong>开启代理</strong> —— 无框架、无构建，仅一个 CSS 和一个 JS，打开即用。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="about-section">
+          <h3><i class="fas fa-layer-group"></i> 页面结构</h3>
+          <div class="about-pages">
+            <a class="about-page-card" href="index.html">
+              <i class="fas fa-house"></i>
+              <span class="about-page-name">首页</span>
+              <span class="about-page-desc">链接导航列表</span>
+            </a>
+            <a class="about-page-card" href="download.html">
+              <i class="fas fa-download"></i>
+              <span class="about-page-name">下载</span>
+              <span class="about-page-desc">三平台安装包</span>
+            </a>
+            <a class="about-page-card" href="notes.html">
+              <i class="fas fa-pen-to-square"></i>
+              <span class="about-page-name">免费节点</span>
+              <span class="about-page-desc">每日更新</span>
+            </a>
+          </div>
+        </div>
+
+        <p class="about-footer">
+          <i class="fas fa-heart"></i>
+          用心打磨每一个细节，希望你喜欢。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="menu.js"></script>
+</body>
+
+</html>

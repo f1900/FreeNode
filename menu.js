@@ -202,4 +202,92 @@ $(function () {
   $(document).on('keydown', function (e) {
     if (e.key === 'Escape' && $viewer.hasClass('show')) closeViewer();
   });
+
+
+  // ===== 配置工具按钮 =====
+  const HOME_URL = 'index.html';                   // 首页地址
+  const QR_IMAGE = 'image/qr.png'; // 二维码图片地址
+  const SHOW_AFTER = 300;                 // 滚动多少 px 后显示"回到顶部"
+
+  // 设备判断
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone/i.test(navigator.userAgent);
+
+  // 首页判断
+  const path = location.pathname;
+  const isHome = path === '/' || /\/index\.(html?|php|asp|aspx)$/i.test(path);
+
+  // ===== 构建 DOM =====
+  const $wrap = $('<div id="floatTools" class="float-tools"></div>');
+
+  const $btnHome = $(
+    '<button type="button" class="float-btn float-home" title="返回首页">' +
+    '<i class="fa-solid fa-house"></i>' +
+    '</button>'
+  );
+
+  const $btnMobile = $(
+    '<button type="button" class="float-btn float-mobile" title="手机访问">' +
+    '<i class="fa-solid fa-mobile-screen-button"></i>' +
+    '</button>'
+  );
+
+  const $btnTop = $(
+    '<button type="button" class="float-btn float-top" title="回到顶部">' +
+    '<i class="fa-solid fa-arrow-up"></i>' +
+    '</button>'
+  );
+
+  $wrap.append($btnHome, $btnMobile, $btnTop);
+  $('body').append($wrap);
+
+  // 二维码弹层
+  const $qrBox = $(
+    '<div id="qrPopup" class="qr-popup">' +
+    '<img src="' + QR_IMAGE + '" alt="网站二维码">' +
+    '<span>扫码在手机上访问</span>' +
+    '</div>'
+  );
+  $('body').append($qrBox);
+
+  // ===== 初始显示状态 =====
+  if (isHome) $btnHome.hide();       // 首页不显示"首页"
+  if (isMobile) $btnMobile.hide();   // 手机不显示"手机访问"
+  $btnTop.removeClass('show');       // 顶部不显示"回到顶部"
+
+  // 三个都隐藏则整体隐藏
+  function updateWrapVisibility() {
+    const anyVisible = [$btnHome, $btnMobile, $btnTop].some($b => $b.css('display') !== 'none');
+    $wrap.toggle(anyVisible);
+  }
+  updateWrapVisibility();
+
+  // ===== 事件 =====
+  $btnHome.on('click', function () {
+    location.href = HOME_URL;
+  });
+
+  $btnMobile.on('click', function (e) {
+    e.stopPropagation();
+    $qrBox.toggleClass('show');
+  });
+
+  $btnTop.on('click', function () {
+    $('html, body').animate({ scrollTop: 0 }, 300);
+  });
+
+  // 点击二维码弹层外关闭
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('#qrPopup').length && !$(e.target).closest('.float-mobile').length) {
+      $qrBox.removeClass('show');
+    }
+  });
+
+  // 滚动控制"回到顶部"
+  function onScroll() {
+    if ($btnTop.css('display') === 'none') return;
+    $btnTop.toggleClass('show', $(window).scrollTop() > SHOW_AFTER);
+  }
+  $(window).on('scroll', onScroll);
+  onScroll();
+
 });

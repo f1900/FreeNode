@@ -249,20 +249,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     font-size: 16px;
-    z-index: 9999;
+    z-index: 99999;
   }
-  
-  .spinner {
+  .loading-mask .fa-spinner {
+    font-size: 24px;   /* 图标比文字大一点更醒目 */
+    animation: spin 1s linear infinite;
+  }
+  /* .spinner {
     width: 20px;
     height: 20px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-  }
-  
+  } */
   @keyframes spin {
     to { transform: rotate(360deg); }
-  }
+  } 

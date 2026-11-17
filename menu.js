@@ -8,8 +8,8 @@ $(function () {
   const MENU_CONFIG = [
     { page: 'index', href: 'index.html', icon: 'fa-house', label: '首页' },
     { page: 'download', href: 'download.html', icon: 'fa-download', label: '下载' },
-    { page: 'notes', href: 'notes.html', icon: 'fa-pen-to-square', label: '免费节点' }
-    // ,{ page: 'reward', href: 'reward.html', icon: 'fa-mug-hot', label: '打赏' }
+    { page: 'notes', href: 'notes.html', icon: 'fa-paper-plane', label: '免费节点' }
+    // ,{ page: 'reward', href: 'reward.html', icon: 'fa-mug-hot', label: '打赏站长' }
   ];
 
   // ---------- 页脚配置（外部网站链接） ----------
@@ -17,24 +17,25 @@ $(function () {
     { href: 'https://www.wikipedia.org', label: '维基百科', icon: 'fa-wikipedia-w' },
     { href: 'https://www.google.org', label: 'Google', icon: 'fa-google' },
     { href: 'https://www.youtube.com', label: 'Youtube', icon: 'fa-youtube' },
-    { href: 'https://x.com', label: 'X', icon: 'fa-x-twitter' },
+    { href: 'https://x.com', label: 'Twitter', icon: 'fa-x-twitter' },
+    { href: 'https://www.instagram.com', label: 'Instagram', icon: 'fa-instagram' },
     { href: 'https://github.com', label: 'GitHub', icon: 'fa-github' }
     // { href: 'https://developer.mozilla.org', label: 'MDN Web Docs', icon: 'fas fa-book-open' },
     // { href: 'https://stackoverflow.com', label: 'Stack Overflow', icon: 'fab fa-stack-overflow' }
   ];
 
-  // 想关掉所有广告：将 AD_LIST 设置为 [] 空数组
-  // 想加广告：复制一行对象即可，自上而下排列
+  // 想关掉所有横幅：将 AD_LIST 设置为 [] 空数组
+  // 想加横幅：复制一行对象即可，自上而下排列
   const AD_LIST = [
     // {
     //   imageSrc: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop',
     //   linkUrl: 'https://example.com/ad1',
-    //   alt: '广告横幅 1'
+    //   alt: '横幅1'
     // },
     {
-      imageSrc: 'https://i0.hdslb.com/bfs/archive/b3f7ab85a613806f7b6b1b7e18095098ade82ce0.jpg',
+      imageSrc: 'image/banner.jpg',
       linkUrl: '#',
-      alt: '广告横幅 2'
+      alt: 'banner'
     }
     // 想加第三个就在这里继续加 { ... }
   ];
@@ -42,21 +43,21 @@ $(function () {
   const $body = $('body');
   const currentPage = $body.data('page') || 'index';
 
-   // ---------- 构建并注入多个顶部广告位 ----------
+  // ---------- 构建并注入多个顶部横幅位 ----------
   if (AD_LIST.length > 0) {
-    // 创建一个大容器包裹所有广告，方便统一处理
+    // 创建一个大容器包裹所有横幅，方便统一处理
     const $adContainer = $('<div>', { class: 'cnm-container' });
 
     $.each(AD_LIST, function (index, ad) {
       const $adBanner = $('<div>', { class: 'cnm-banner-wrap' });
       const $adInner = $('<div>', { class: 'cnm-inner' }).appendTo($adBanner);
-      
-      // 关闭按钮（为每个广告单独绑定）
-      const $closeBtn = $('<button>', { class: 'cnm-close', type: 'button', 'aria-label': '关闭广告' })
+
+      // 关闭按钮（为每个横幅单独绑定）
+      const $closeBtn = $('<button>', { class: 'cnm-close', type: 'button', 'aria-label': '关闭' })
         .append($('<i>', { class: 'fas fa-times' }))
         .appendTo($adInner);
 
-      // 广告链接与图片
+      // 横幅链接与图片
       $('<a>', { href: ad.linkUrl, target: '_blank', rel: 'noopener noreferrer', class: 'cnm-link' })
         .append($('<img>', { src: ad.imageSrc, alt: ad.alt }))
         .appendTo($adInner);
@@ -67,7 +68,7 @@ $(function () {
         $adBanner.slideUp(300);
       });
 
-      // 如果用户之前关过某一个（针对单个广告的记忆）
+      // 如果用户之前关过某一个（针对单个横幅的记忆）
       // if (sessionStorage.getItem('ad_closed_' + index) === 'true') {
       //   $adBanner.hide();
       // } else {
@@ -83,7 +84,7 @@ $(function () {
       $adContainer.append($adBanner);
     });
 
-    // 将这一组广告全部插到 .app-container 的前面
+    // 将这一组横幅全部插到 .app-container 的前面
     $('.app-container').before($adContainer);
   }
   // ---------- 构建并注入菜单 ----------
@@ -131,7 +132,7 @@ $(function () {
   $footer.append($footerLinks);
 
   const $footerCopy = $('<p>', { class: 'footer-copy' })
-    .append($('<i>', { class: 'fas fa-heart' }))
+    // .append($('<i>', { class: 'fas fa-heart' }))
     .append(document.createTextNode(' 用心打磨 · 保留所有权利 © ' + new Date().getFullYear()));
   $footer.append($footerCopy);
 
@@ -167,8 +168,8 @@ $(function () {
     });
 
 
-    // ---------- 构建并注入图片view ----------
-    const $viewer = $(`
+  // ---------- 构建并注入图片view ----------
+  const $viewer = $(`
     <div id="imgViewer" class="img-viewer">
       <img id="imgViewerImg" src="" alt="">
     </div>

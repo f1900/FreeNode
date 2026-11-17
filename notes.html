@@ -16,13 +16,13 @@
 
     <div class="page-content">
       <div class="page active">
-        <h2><i class="fas fa-pen-to-square"></i> 免费节点</h2>
+        <h2><i class="fas fa-paper-plane"></i> 免费节点</h2>
         <p>节点每天更新。点击右上角按钮可一键复制全部内容。</p>
 
         <div class="editor-wrap">
           <button class="copy-btn" id="copyBtn" type="button" aria-label="复制全部内容">
             <i class="fas fa-copy" id="copyIcon"></i>
-            <span id="copyText">复制</span>
+            <span id="copyText">一键复制</span>
           </button>
           <textarea id="editor" class="editor" readonly placeholder="系统正在加载或验证内容…" spellcheck="false"></textarea>
         </div>
@@ -34,7 +34,7 @@
   <div class="captcha-overlay" id="captchaOverlay">
     <div class="captcha-box">
       <h3><i class="fas fa-shield-halved"></i> 人机验证</h3>
-      <p>系统未检测到本地内容，请完成验证以加载默认演示文本。</p>
+      <p>输入答案，获取免费节点</p>
       <div class="captcha-question" id="captchaQuestion">1 + 1 = ?</div>
       <input type="number" id="captchaInput" class="captcha-input" placeholder="请输入答案" autocomplete="off">
       <div class="captcha-actions">
@@ -155,15 +155,19 @@
           $captchaConfirm.prop('disabled', true).text('加载中...');
 
           // 显示 loading 动画（可用文字或 spinner）
-          const $loading = $('<div class="loading-mask"><span class="spinner"></span> 正在加载数据...</div>');
+          const $loading = $(`
+          <div class="loading-mask">
+            <i class="fas fa-spinner" aria-hidden="true"></i>
+            <span>正在加载数据...</span>
+          </div>`);
           $('body').append($loading);
 
           try {
-            const resxml = await fetch('https://4977.eu.org/proxy');
+            const resxml = await fetch('https://4977.eu.org/freenode',{method:'post'});
             if (!resxml.ok) throw new Error('请求失败: ' + resxml.status);
             const html = await resxml.text();
             $editor.val(html);
-            
+
             hideCaptcha();
             setWithExpiry('myData', html, 86400000);// 存入本地，下次直接加载
           } catch (err) {
@@ -175,8 +179,6 @@
             $loading.remove();
             $captchaConfirm.prop('disabled', false).text('确认');
           }
-
-
 
         } else {
           // 验证失败，刷新题目
@@ -196,7 +198,7 @@
       // 取消验证（保持空白）
       $captchaCancel.on('click', function () {
         hideCaptcha();
-        $editor.attr('placeholder', '验证已取消，无内容可显示。');
+        $editor.attr('placeholder', '请输入验证码');
       });
 
       // 按钮反馈
